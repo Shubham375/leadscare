@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+*{
+  margin: 0;
+  padding: 0;
+}
+html{
+  font-size: 100%;
+  overflow-x: hidden;
+}
+
+::selection{
+  color: #fff;
+  background-color: rgb(255, 119, 0);
+}
+
+.myshadowin{
+  box-shadow: inset 5px 3px 8px 0px #a59d9d;
+}
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+
+
+@media (max-width:1240px) {
+  html{font-size: 95%;}
+}
+
+@media (max-width:1020px) {
+  html{font-size: 80%;}
+}
+
+@media (max-width:767px) {
+  html{font-size: 70%;}
+}
