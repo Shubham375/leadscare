@@ -6,7 +6,16 @@ import { useState } from "react";
 
 const Register = () => {
     const [curComp, setCurComp] = useState("email");
-    const [errorInput, setErrorInput] = useState();
+    const [errorInput, setErrorInput] = useState({
+        fristname: false,
+        lastname: false,
+        phone: false,
+        email: false,
+        password: false,
+        age: false,
+        gender:false,
+        purchasepack: false,
+    });
     const [user, setUser] = useState({
         fristname: "",
         lastname: "",
@@ -21,14 +30,16 @@ const Register = () => {
     const handleInput = (e) => {
         let name = e.target.name;
         let value = e.target.value;
-
+        
         setUser({
             ...user,
-            [name]: value
-        })
+            [name]:value,
+        });
+        e.preventDefault();
     }
 
-    const emailChecker = async () => {
+    const emailChecker = async (e) =>{
+        e.preventDefault();
         try {
             const res = await fetch("http://localhost:5000/api/auth/emailcheck",
                 {
@@ -61,9 +72,9 @@ const Register = () => {
             case "email":
                 return (
                     <form className="grid grid-cols-1 content-around h-[70%] w-[80%] justify-center ">
-                        <TextField sx={{ backgroundColor: `#fae0ff` }} error={false} variant="standard" label="Email" onChange={(e) => { handleInput(e) }} name="email" value={user.email} type="email" />
-                        <TextField error={false} variant="standard" label="Password" onChange={handleInput} name="password" value={user.password} type="password" />
-                        <TextField error={false} variant="standard" label="Conform Password" type="password" />
+                        <TextField error={errorInput.email} variant="standard" label="Email" value={user.email} onChange={handleInput}  name="email"  type="email" autoComplete="email" />
+                        <TextField error={errorInput.password} variant="standard" label="Password" onChange={handleInput} name="password" value={user.password} type="password" />
+                        <TextField error={errorInput.password} variant="standard" label="Conform Password" type="password" />
                         <Button sx={{ backgroundColor: `#af00ce` }} type="submit" variant="contained" onClick={emailChecker}>Countinue</Button>
                     </form>
                 );
@@ -119,7 +130,7 @@ const Register = () => {
             </div>
             <div className="h-[90%] w-[45%] flex flex-col justify-center items-center max-sm:h-[25rem] max-sm:w-[80vw]">
                 <h2 className="font-bold">Step {curComp==="purchase"?"3":(curComp === "email"?"1":"2")}/3</h2>
-                <RegiseterComponent />
+                {RegiseterComponent()}
             </div>
         </main>
     )
