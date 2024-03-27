@@ -6,7 +6,7 @@ const PackageCard = ({ src, price, title, courses, time, studentsNo, to }) => {
         <>
             <div className="shadow-lg  h-[32rem] bg-white  w-[18rem] rounded-[1.5rem] overflow-hidden">
 
-                <figure className="h-[16rem] w-[18rem] bg-red-300">
+                <figure className="h-[16rem] w-[18rem] bg-red-300 ">
                     <Image loading="lazy" height={800} width={900} src={src} alt="thumbnail" />
                     <div className="flex flex-row justify-between px-[0.5rem] ">
                         <figcaption className="h-[2.5rem] w-[6rem] flex items-center justify-center font-semibold text-[1.5rem] text-[#470b42] bg-[#ffffffb7] backdrop-blur-sm  rounded-[0.8rem]">{price}</figcaption>

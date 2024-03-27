@@ -13,11 +13,11 @@ const codecheck = async (req, res,next) => {
         const { sponsorcode } = req.body;
         const check = await User.findOne({ refferalcode: sponsorcode });
         if (!check) {
-            return res.status(400).json({ msg: "WRONG REFFERAL CODE" });
+            return res.status(404).json({ msg: "WRONG REFFERAL CODE" });
         }
         res.status(200).json({ msg: check });
     } catch (error) {
-        console.log(error);
+        next({details:"Error"})
     }
 };
 const emailcheck = async (req, res,next) => {
@@ -33,13 +33,16 @@ const emailcheck = async (req, res,next) => {
     }
 };
 
+const detailscheck = (req,res,next)=>{
+    res.status(200).json({ msg: "Details verified" });
+}
+
 const register = async (req, res,next) => {
     try {
         const { password, sponsoremail } = req.body;
         const check = await User.findOne({ email: sponsoremail });
 
-
-        const saltRound = 10;
+        const saltRound = await bcrypt.genSalt(10);
         const hashpassword = await bcrypt.hash(password, saltRound);
 
         const newuser = await User.create({ ...req.body, password: hashpassword });
@@ -72,7 +75,7 @@ const register = async (req, res,next) => {
                     }
                 })
             }
-            else if (purchasepack === "starter") {
+            else if (purchasepack === "standard") {
                 await User.updateOne({ email: sponsoremail }, {
                     $set: {
                         reffers: parseInt(reffers) + 1,
@@ -130,4 +133,4 @@ const login = async (req, res,next) => {
     }
 };
 
-module.exports = { home, register, codecheck, emailcheck, login };
+module.exports = { home, register, codecheck, emailcheck, login, detailscheck };
