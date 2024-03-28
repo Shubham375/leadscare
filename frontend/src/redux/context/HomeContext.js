@@ -24,7 +24,7 @@ const HomeProvider = ({children}) => {
                     },
                 })
             const data = await res.json();
-            if(res.status){
+            if(res.ok){
                 dispatch({type:"SET_PACK_DATA",payload:data})
             }
             console.log(res);

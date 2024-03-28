@@ -3,7 +3,8 @@ import { HomeContext } from "@/redux/context/HomeContext";
 import { Button, MenuItem, Select, TextField } from "@mui/material";
 import Image from "next/image";
 import { useState, useContext } from "react";
-import * as referralCodes from "referral-codes"
+import * as referralCodes from "referral-codes";
+import Link from "next/link";
 
 const Register = () => {
   const [curComp, setCurComp] = useState("email");
@@ -23,13 +24,11 @@ const Register = () => {
   const handleInput = (e) => {
     let name = e.target.name;
     let value = e.target.value;
- console.log(user);
     setUser({
       ...user,
       [name]: value,
     });
     e.preventDefault();
-    console.log(user.gender);
   };
 
   const emailChecker = async (e) => {
@@ -100,7 +99,7 @@ const Register = () => {
       }
   };
   const PayNCreate = async() => {
-    try {
+  try {
         const createUser = {...user,refferalcode:referralCodes.generate()[0]}
         const res = await fetch("http://localhost:5000/api/auth/register", {
             method: "POST",
@@ -111,6 +110,10 @@ const Register = () => {
           });
       const data = await res.json();
       console.log(data);
+      if(res.ok){
+        localStorage.setItem("DU-Auth",data.token);
+        console.log("saved   ",data.token);
+      }
   } catch (error) {
     console.log(error);
   }
@@ -256,14 +259,14 @@ const Register = () => {
                 variant="standard"
                 label="Enter Code Here"
                 type="text"
+                value={code}
+                onChange={(e)=>setCode(e.target.value)}
               />
               <Button
                 sx={{ backgroundColor: `#af00ce` }}
                 color="primary"
                 variant="contained"
-                onClick={(e) => {
-                  codeChecker(e.target.value);
-                }}
+                onClick={ codeChecker }
               >
                 Apply
               </Button>
@@ -328,6 +331,11 @@ const Register = () => {
           /3
         </h2>
         {RegiseterComponent()}
+        <hr className="w-full"/>
+        <div className="flex flex-row my-[4px]">
+                <h6>Already have an account?</h6>
+                <Link className="text-blue-400" href={"/login"}>Log In</Link>
+                </div>
       </div>
     </main>
   );

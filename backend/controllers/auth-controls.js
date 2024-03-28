@@ -41,7 +41,7 @@ const register = async (req, res,next) => {
     try {
         const { password, sponsoremail } = req.body;
         const check = await User.findOne({ email: sponsoremail });
-
+        console.log(sponsoremail);
         const saltRound = await bcrypt.genSalt(10);
         const hashpassword = await bcrypt.hash(password, saltRound);
 
@@ -115,7 +115,7 @@ const login = async (req, res,next) => {
         const check = await User.findOne({ email });
 
         if (!check) {
-            return next({ status: 422, msg: "invalid Credential" });
+            return next({ status: 422, msg: "invalid Credential",details:"Invalid Email" });
         }
 
         const isreal = await bcrypt.compare(password, check.password);
@@ -133,4 +133,14 @@ const login = async (req, res,next) => {
     }
 };
 
-module.exports = { home, register, codecheck, emailcheck, login, detailscheck };
+
+const user = async(req,res,next)=>{
+    try {
+        const user = await req.user
+        return res.status(200).json({msg:user})
+    } catch (error) {
+        console.log("Cant get req.user");
+    }
+}
+
+module.exports = { home, register, codecheck, emailcheck, login, detailscheck , user};

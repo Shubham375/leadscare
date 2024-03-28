@@ -5,6 +5,7 @@ import '@fontsource/roboto/700.css';
 import './globals.css';
 import  Navbar  from '@/components/Navbar';
 import { HomeProvider } from '@/redux/context/HomeContext';
+import { UserProvider } from '@/redux/context/UserContext';
 
 
 
@@ -21,7 +22,9 @@ export default function RootLayout({ children }) {
         <Navbar/>
         </header>
         <HomeProvider>
+          <UserProvider>
           {children}
+          </UserProvider>
         </HomeProvider>
         </body>
     </html>
